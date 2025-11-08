@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const expressHandlebars = require('express-handlebars');
 const helmet = require('helmet');
 const session = require('express-session');
-const RedisStore = require('connect-redis').RedisStore;
+const { RedisStore } = require('connect-redis');
 const redis = require('redis');
 
 const router = require('./router.js');
@@ -42,6 +42,7 @@ redisClient.connect().then(() => {
 
   app.use(session({
     key: 'sessionid',
+    store: new RedisStore({ client: redisClient }),
     secret: 'Domo Arigato',
     resave: false,
     saveUninitialized: false,
@@ -59,12 +60,4 @@ redisClient.connect().then(() => {
     }
     console.log(`Listening on port ${port}`);
   });
-
-  app.use(session({
-    key: 'sessionid',
-    store: new RedisStore({ client: redisClient }),
-    secret: 'Domo Arigato',
-    resave: false,
-    saveUninitialized: false,
-  }))
 });

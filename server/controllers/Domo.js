@@ -1,6 +1,6 @@
 const models = require('../models');
 
-const Domo = models.Domo;
+const { Domo } = models;
 
 const makerPage = async (req, res) => {
   try {
@@ -15,7 +15,7 @@ const makerPage = async (req, res) => {
 };
 
 const makeDomo = async (req, res) => {
-  if(!req.body.name || !req.body.age) {
+  if (!req.body.name || !req.body.age) {
     return res.status(400).json({ error: 'Both name and age are required!' });
   }
 
@@ -31,7 +31,7 @@ const makeDomo = async (req, res) => {
     return res.json({ redirect: '/maker' });
   } catch (err) {
     console.log(err);
-    if(err.code === 11000) {
+    if (err.code === 11000) {
       return res.status(400).json({ error: 'Domo already exists!' });
     }
     return res.status(500).json({ error: 'An error occurred' });
